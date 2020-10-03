@@ -12,6 +12,7 @@ app.get("/", (req, res) => res.send("ok"));
 app.use("/contacts", require("./routes/contacts"))
 app.use("/messages", require("./routes/messages"))
 app.use("/calls", require("./routes/calls"))
+app.use("/profile", require("./routes/profile"))
 
 const PORT = process.env.PORT || 8080;
 

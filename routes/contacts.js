@@ -15,12 +15,13 @@ router.post("/add", (req, res) => {
 })
 
 router.delete("/delete/:id", (req, res) => {
-    let idList = [];
-    db.contactos.forEach(contact => {
-        idList.push(contact.id);
+    let indexToRemove;
+    db.contactos.forEach((contact, index) => {
+        if (contact.id == req.params.id) {
+            indexToRemove = index;
+        }
     })
-    let index = idList.indexOf(req.params.id);
-    let deletedContact = db.contactos.splice(index, 1)[0];
+    let deletedContact = db.contactos.splice(indexToRemove, 1)[0];
     res.send(deletedContact.name + " ha sido elminado/a de la lista");
 })
 

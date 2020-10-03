@@ -1,3 +1,7 @@
+// const setRoutes = require("./setRoutes");
+
+// setRoutes("llamadas");
+
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
@@ -15,12 +19,13 @@ router.post("/add", (req, res) => {
 })
 
 router.delete("/delete/:id", (req, res) => {
-    let idList = [];
-    db.llamadas.forEach(llamada => {
-        idList.push(llamada.id);
+    let indexToRemove;
+    db.llamadas.forEach((llamada, index) => {
+        if (llamada.id == req.params.id) {
+            indexToRemove = index
+        }
     })
-    let index = idList.indexOf(req.params.id);
-    db.llamadas.splice(index, 1)[0];
+    db.llamadas.splice(indexToRemove, 1)[0];
     res.send("La llamada ha sido elminado/a de la lista");
 })
 
