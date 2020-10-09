@@ -1,7 +1,3 @@
-// const setRoutes = require("./setRoutes");
-
-// setRoutes("llamadas");
-
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
