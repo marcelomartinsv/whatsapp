@@ -1,30 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+const Contact = require('../model/Contact');
 
 //const newContact = { "id": 7, "name": "pipa", "alias": "elPipaDeLaGente", "number": 123455667, "imageUrl": "pipa.jpg", "contactos": [1, 2, 3, 4, 5, 6] }
 
-router.get("/", (req, res) => { res.send(db.contactos) })
+router.get("/", (req, res) => { 
+    Contact.findAll({
+        orderBy: [['id', 'ASC']],
+    })
+        .then((contacts) => res.send(contacts))
+        .catch((err) => res.status(400).send(err))
+ })
 
 router.get("/:id", (req, res) => {
-    res.send(Array.from(db.contactos).find(contacto => contacto.id == req.params.id))
+    Contact.findAll({
+        where: { id: req.params.id },
+    })
+        .then((contact) => res.send(contact))
+        .catch((err) => res.status(400).send(err))
 })
+
 router.post("/add", (req, res) => {
-    db.contactos.push(req.body);
-    res.send(db.contactos[db.contactos.length - 1])
+    Contact.create(req.body)
+        .then((contact) => res.send(contact))
+        .catch((err) => res.status(400).send(err))
 })
 
 router.delete("/delete/:id", (req, res) => {
-    let indexToRemove;
-    db.contactos.forEach((contact, index) => {
-        if (contact.id == req.params.id) {
-            indexToRemove = index;
-        }
+    Contact.destroy({
+        where: { id: req.params.id }
     })
-    let deletedContact = db.contactos.splice(indexToRemove, 1)[0];
-    res.send(deletedContact.name + " ha sido elminado/a de la lista");
+        .then(() => res.sendStatus(202))
+        .catch((err) => res.status(400).send(err))
 })
-
 
 module.exports = router;
 

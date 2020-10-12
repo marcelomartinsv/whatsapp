@@ -1,27 +1,38 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const Message = require('../model/Message');
 
 //const newMessage = { "id": 5, "contactFrom": 6, "contact": 1, "date": "07/07/2020", "text": "Hola Pepo, soy Tito" }
 
-router.get("/", (req, res) => { res.send(db.mensajes) })
+router.get("/", (req, res) => {
+    Message.findAll({
+        orderBy: [['id', 'ASC']],
+    })
+        .then((messages) => res.send(messages))
+        .catch((err) => res.status(400).send(err))
+})
 
 router.get("/:id", (req, res) => {
-    res.send(Array.from(db.mensajes).find(mensaje => mensaje.id == req.params.id))
+    Message.findAll({
+        where: { id: req.params.id },
+    })
+        .then((message) => res.send(message))
+        .catch((err) => res.status(400).send(err))
 })
+
 router.post("/add", (req, res) => {
-    db.mensajes.push(req.body);
-    res.send(db.mensajes[db.mensajes.length - 1])
+    Message.create(req.body)
+        .then((message) => res.send(message))
+        .catch((err) => res.status(400).send(err))
 })
 
 router.delete("/delete/:id", (req, res) => {
-    let idList = [];
-    db.mensajes.forEach(mensaje => {
-        idList.push(mensaje.id);
+    Message.destroy({
+        where: { id: req.params.id }
     })
-    let index = idList.indexOf(req.params.id);
-    db.mensajes.splice(index, 1)[0];
-    res.send("El mensaje ha sido elminado/a de la lista");
+        .then(() => res.sendStatus(202))
+        .catch((err) => res.status(400).send(err))
 })
 
 

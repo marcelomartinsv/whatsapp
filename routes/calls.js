@@ -1,28 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/db');
+const Call = require('../model/Call');
+// { "contactFrom": 2, "contact": 5, "date": "01/10/2020"," duration": 23, "type": "Out" }
 
-// { "id": 5, "contactFrom": 2, "contact": 5, "date": "01/10/2020"," duration": 23, "type": "Out" }
-
-router.get("/", (req, res) => { res.send(db.llamadas) })
+router.get("/", (req, res) => {
+    Call.findAll({
+        orderBy: [['id', 'ASC']],
+    })
+        .then((calls) => res.send(calls))
+        .catch((err) => res.status(400).send(err))
+})
 
 router.get("/:id", (req, res) => {
-    res.send(Array.from(db.llamadas).find(llamada => llamada.id == req.params.id))
+    Call.findAll({
+        where: { id: req.params.id },
+    })
+        .then((call) => res.send(call))
+        .catch((err) => res.status(400).send(err))
 })
+
 router.post("/add", (req, res) => {
-    db.llamadas.push(req.body);
-    res.send(db.llamadas[db.llamadas.length - 1])
+    Call.create(req.body)
+        .then((call) => res.send(call))
+        .catch((err) => res.status(400).send(err))
 })
 
 router.delete("/delete/:id", (req, res) => {
-    let indexToRemove;
-    db.llamadas.forEach((llamada, index) => {
-        if (llamada.id == req.params.id) {
-            indexToRemove = index
-        }
+    Call.destroy({
+        where: { id: req.params.id }
     })
-    db.llamadas.splice(indexToRemove, 1)[0];
-    res.send("La llamada ha sido elminado/a de la lista");
+        .then(() => res.sendStatus(202))
+        .catch((err) => res.status(400).send(err))
 })
 
 
