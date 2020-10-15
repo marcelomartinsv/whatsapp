@@ -23,9 +23,7 @@ app.use((req, res, next) => {
     });
 
 app.get("/", (req, res) => res.send("ok"));
-app.use("/contacts", require("./routes/contacts"))
-app.use("/messages", require("./routes/messages"))
-app.use("/calls", require("./routes/calls"))
+app.use("/", require("./routes"));
 
 const PORT = process.env.PORT || 8080;
 

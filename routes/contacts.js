@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Contact = require('../model/Contact');
 
-//const newContact = { "id": 7, "name": "pipa", "alias": "elPipaDeLaGente", "number": 123455667, "imageUrl": "pipa.jpg", "contactos": [1, 2, 3, 4, 5, 6] }
-
 router.get("/", (req, res) => { 
     Contact.findAll({
         orderBy: [['id', 'ASC']],
@@ -30,7 +28,7 @@ router.delete("/delete/:id", (req, res) => {
     Contact.destroy({
         where: { id: req.params.id }
     })
-        .then(() => res.sendStatus(202))
+        .then(() => res.send('contacto eliminado').sendStatus(202))
         .catch((err) => res.status(400).send(err))
 })
 

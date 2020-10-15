@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Call = require('../model/Call');
-// { "contactFrom": 2, "contact": 5, "date": "01/10/2020"," duration": 23, "type": "Out" }
 
 router.get("/", (req, res) => {
     Call.findAll({
@@ -29,7 +28,7 @@ router.delete("/delete/:id", (req, res) => {
     Call.destroy({
         where: { id: req.params.id }
     })
-        .then(() => res.sendStatus(202))
+        .then(() => res.send('llamada eliminada').sendStatus(202))
         .catch((err) => res.status(400).send(err))
 })
 

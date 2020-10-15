@@ -3,8 +3,6 @@ const router = express.Router();
 const db = require('../config/db');
 const Message = require('../model/Message');
 
-//const newMessage = { "id": 5, "contactFrom": 6, "contact": 1, "date": "07/07/2020", "text": "Hola Pepo, soy Tito" }
-
 router.get("/", (req, res) => {
     Message.findAll({
         orderBy: [['id', 'ASC']],
@@ -31,7 +29,7 @@ router.delete("/delete/:id", (req, res) => {
     Message.destroy({
         where: { id: req.params.id }
     })
-        .then(() => res.sendStatus(202))
+        .then(() => res.send('mensaje elminado').sendStatus(202))
         .catch((err) => res.status(400).send(err))
 })
 
