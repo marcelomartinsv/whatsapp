@@ -33,6 +33,8 @@ const Contact = db.define("contact", {
     contactos: {
         type: Sequelize.ARRAY(Sequelize.INTEGER), defaultValue: null
     }
+}, {
+    paranoid: true
 })
 
 Contact.sync().then(() => {

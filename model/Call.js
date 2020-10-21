@@ -32,6 +32,9 @@ const Call = db.define("call", {
             notEmpty: true
         }
     },
+
+}, {
+    paranoid: true
 })
 
 Call.sync().then(() => {

@@ -23,6 +23,8 @@ const Message = db.define("message", {
     text: {
         type: Sequelize.STRING,
     },
+}, {
+    paranoid: true
 })
 
 Message.sync().then(() => {
