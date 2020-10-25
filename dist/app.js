@@ -8,6 +8,10 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const logger = require('./utils/logger');
 const app = express_1.default();
 const db = require('../config/database');
+db.sync().then(() => {
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => logger.info("server ok!"));
+});
 db.authenticate()
     .then(() => console.log('db ok!'))
     .catch((err) => console.log(err));
@@ -27,6 +31,4 @@ app.get("/", (req, res) => {
     return res.send("ok");
 });
 app.use("/", require("../routes"));
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => logger.info("server ok!"));
 module.exports = app;

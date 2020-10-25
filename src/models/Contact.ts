@@ -2,44 +2,43 @@ import { DataType } from 'sequelize-typescript';
 import sequelize from 'sequelize';
 const db = require('../../config/database');
 
-export const Call: sequelize.Model= db.define("call", {
-    contactFrom: {
+export const Contact: sequelize.Model = db.define("contact", {
+    name: {
         type: DataType.STRING,
         validate: {
             notEmpty: true
         }
     },
-    contact: {
-        type: DataType.INTEGER,
-        validate: {
-            notEmpty: true
-        }
-    },
-    date: {
-        type: DataType.DATE,
-        validate: {
-            notEmpty: true
-        }
-    },
-    durationInSeconds: {
-        type: DataType.INTEGER,
-        validate: {
-            notEmpty: true
-        }
-    },
-    type: {
+    alias: {
         type: DataType.STRING,
         validate: {
             notEmpty: true
         }
     },
+    phone: {
+        type: DataType.STRING,
+        validate: {
+            notEmpty: true
+        },
+        unique: {
+            args: true,
+            msg: 'Este teléfono ya se encuentra registrado'
+        }
+    },
+    imageUrl: {
+        type: DataType.STRING,
+        validate: {
+            notEmpty: true
+        }
+    },
+    contactos: {
+        type: DataType.ARRAY(DataType.INTEGER), defaultValue: null
+    }
 
 }, {
     paranoid: true
 })
 
-// Call.sync().then(() => {
+// Contact.sync().then(() => {
 //     console.log('table call created')
 // })
-
-module.exports = Call;

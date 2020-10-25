@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
-const Message = require('../models/Messages');
+const Message = require('../models/Message');
 
 interface Message {
     id: number
