@@ -30,5 +30,5 @@ app.get("/", (req, res) => {
     logger.info("usuario en root");
     return res.send("ok");
 });
-app.use("/", require("./routes/index"));
+app.use("/", require("./routes"));
 module.exports = app;
