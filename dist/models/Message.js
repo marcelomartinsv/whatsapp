@@ -28,7 +28,7 @@ exports.Message = db.define("message", {
 }, {
     paranoid: true
 });
-exports.Message.sync().then(() => {
-    console.log('table message created');
-});
+// Message.sync().then(() => {
+//     console.log('table message created')
+// })
 module.exports = exports.Message;

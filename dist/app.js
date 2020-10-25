@@ -12,9 +12,9 @@ db.sync().then(() => {
     const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => logger.info("server ok!"));
 });
-db.authenticate()
-    .then(() => console.log('db ok!'))
-    .catch((err) => console.log(err));
+// db.authenticate()
+//     .then(() => console.log('db ok!'))
+//     .catch((err: Error) => console.log(err));
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
 app.use((req, res, next) => {
@@ -30,5 +30,5 @@ app.get("/", (req, res) => {
     logger.info("usuario en root");
     return res.send("ok");
 });
-app.use("/", require("../routes"));
+app.use("/", require("./routes/index"));
 module.exports = app;

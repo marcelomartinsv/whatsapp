@@ -38,6 +38,6 @@ exports.Contact = db.define("contact", {
 }, {
     paranoid: true
 });
-exports.Contact.sync().then(() => {
-    console.log('table call created');
-});
+// Contact.sync().then(() => {
+//     console.log('table call created')
+// })

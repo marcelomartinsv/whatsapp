@@ -37,7 +37,7 @@ exports.Call = db.define("call", {
 }, {
     paranoid: true
 });
-exports.Call.sync().then(() => {
-    console.log('table call created');
-});
+// Call.sync().then(() => {
+//     console.log('table call created')
+// })
 module.exports = exports.Call;

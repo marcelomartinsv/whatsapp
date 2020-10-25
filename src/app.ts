@@ -11,9 +11,9 @@ db.sync().then(() => {
     app.listen(PORT, () => logger.info("server ok!"));
 })
 
-db.authenticate()
-    .then(() => console.log('db ok!'))
-    .catch((err: Error) => console.log(err));
+// db.authenticate()
+//     .then(() => console.log('db ok!'))
+//     .catch((err: Error) => console.log(err));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
