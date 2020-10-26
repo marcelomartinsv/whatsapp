@@ -1,5 +1,6 @@
-import express, { Application, Request, Response, NextFunction} from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
+import api from './routes/index';
 const logger = require('./utils/logger')
 
 const app: Application = express();
@@ -27,11 +28,11 @@ app.get("/", (req: Request, res: Response) => {
     logger.info("usuario en root");
     return res.send("ok")
 });
-app.use("/", require("../routes"));
+app.use("/", api);
 
 const PORT = process.env.PORT || 8080;
-
 app.listen(PORT, () => logger.info("server ok!"));
+
 
 module.exports = app;
 
