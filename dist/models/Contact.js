@@ -1,43 +1,84 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Contact = void 0;
-const sequelize_typescript_1 = require("sequelize-typescript");
-const db = require('../../config/database');
-exports.Contact = db.define("contact", {
+const sequelize_1 = require("sequelize");
+const sequelize = new sequelize_1.Sequelize('postgres://postgres:1234@localhost:5432/whatsapp');
+class Contact extends sequelize_1.Model {
+}
+Contact.init({
+    id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     name: {
-        type: sequelize_typescript_1.DataType.STRING,
-        validate: {
-            notEmpty: true
-        }
+        type: new sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    lastname: {
+        type: new sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     alias: {
-        type: sequelize_typescript_1.DataType.STRING,
-        validate: {
-            notEmpty: true
-        }
+        type: new sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     phone: {
-        type: sequelize_typescript_1.DataType.STRING,
-        validate: {
-            notEmpty: true
-        },
-        unique: {
-            args: true,
-            msg: 'Este teléfono ya se encuentra registrado'
-        }
+        type: new sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     imageUrl: {
-        type: sequelize_typescript_1.DataType.STRING,
-        validate: {
-            notEmpty: true
-        }
+        type: new sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
-    contactos: {
-        type: sequelize_typescript_1.DataType.ARRAY(sequelize_typescript_1.DataType.INTEGER), defaultValue: null
+    contacts: {
+        type: new sequelize_1.DataTypes.ARRAY(new sequelize_1.DataTypes.INTEGER),
+        allowNull: false
     }
 }, {
+    tableName: "contacts",
+    sequelize,
     paranoid: true
 });
-// Contact.sync().then(() => {
-//     console.log('table call created')
+sequelize.sync().then(() => {
+    console.log('table created');
+})
+    .catch((err) => console.log(err));
+module.exports = Contact;
+// import { DataType } from 'sequelize-typescript';
+// import sequelize from 'sequelize';
+// const db = require('../../config/database');
+// export const Contact: sequelize.Model = db.define("contact", {
+//     name: {
+//         type: DataType.STRING,
+//         validate: {
+//             notEmpty: true
+//         }
+//     },
+//     alias: {
+//         type: DataType.STRING,
+//         validate: {
+//             notEmpty: true
+//         }
+//     },
+//     phone: {
+//         type: DataType.STRING,
+//         validate: {
+//             notEmpty: true
+//         },
+//         unique: {
+//             args: true,
+//             msg: 'Este teléfono ya se encuentra registrado'
+//         }
+//     },
+//     imageUrl: {
+//         type: DataType.STRING,
+//         validate: {
+//             notEmpty: true
+//         }
+//     }
+// }, {
+//     paranoid: true
 // })
+// // Contact.sync().then(() => {
+// //     console.log('table call created')
+// // })

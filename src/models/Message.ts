@@ -1,35 +1,45 @@
-import { DataType } from 'sequelize-typescript';
-import sequelize from 'sequelize';
-const db = require('../../config/database');
+import { Sequelize, Model, DataTypes } from "sequelize";
+const sequelize = new Sequelize('postgres://postgres:1234@localhost:5432/whatsapp');
 
-export const Message: sequelize.Model = db.define("message", {
+class Message extends Model {
+    public id!: number
+    public contactFrom!: number
+    public date!: Date
+    public text!: string
+}
+
+Message.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     contactFrom: {
-        type: DataType.INTEGER,
-        validate: {
-            notEmpty: true
-        }
+        type: new DataTypes.INTEGER,
+        allowNull: false,
     },
     contact: {
-        type: DataType.INTEGER,
-        validate: {
-            notEmpty: true
-        }
+        type: new DataTypes.INTEGER,
+        allowNull: false,
     },
     date: {
-        type: DataType.DATE,
-        validate: {
-            notEmpty: true
-        }
+        type: new DataTypes.DATE,
+        allowNull: false
     },
     text: {
-        type: DataType.STRING,
-    },
-}, {
-    paranoid: true
-})
+        type: new DataTypes.STRING(128),
+        allowNull: true
+    }
+},
+    {
+        tableName: "messages",
+        sequelize,
+        paranoid: true
+    })
 
-// Message.sync().then(() => {
-//     console.log('table message created')
-// })
+sequelize.sync().then(() => {
+    console.log('table created')
+})
+.catch((err) => console.log(err))
 
 module.exports = Message;

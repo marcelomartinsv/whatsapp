@@ -1,45 +1,49 @@
-import { DataType } from 'sequelize-typescript';
-import sequelize from 'sequelize';
-const db = require('../../config/database');
+import { Sequelize, Model, DataTypes } from "sequelize";
+const sequelize = new Sequelize('postgres://postgres:1234@localhost:5432/whatsapp')
 
-export const Call: sequelize.Model= db.define("call", {
+class Call extends Model {
+    public id!: number;
+    public contactFrom!: number;
+    public contact!: number;
+    public date!: Date;
+    public type!: string;
+    public createdAt!: Date;
+    public updatedAt!: Date;
+    public deletedAt!: Date | null;
+}
+
+Call.init({
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     contactFrom: {
-        type: DataType.STRING,
-        validate: {
-            notEmpty: true
-        }
+        type: new DataTypes.INTEGER,
+        allowNull: false,
     },
     contact: {
-        type: DataType.INTEGER,
-        validate: {
-            notEmpty: true
-        }
+        type: new DataTypes.INTEGER,
+        allowNull: false,
     },
     date: {
-        type: DataType.DATE,
-        validate: {
-            notEmpty: true
-        }
+        type: new DataTypes.DATE,
+        allowNull: false
     },
-    durationInSeconds: {
-        type: DataType.INTEGER,
-        validate: {
-            notEmpty: true
-        }
-    },
-    type: {
-        type: DataType.STRING,
-        validate: {
-            notEmpty: true
-        }
-    },
+    type: { 
+        type: new DataTypes.STRING(128),
+        allowNull: false
+    }
+},
+    {
+        tableName: "calls",
+        sequelize,
+        paranoid: true
+    })
 
-}, {
-    paranoid: true
+sequelize.sync().then(() => {
+    console.log('table created')
 })
-
-// Call.sync().then(() => {
-//     console.log('table call created')
-// })
+.catch((err) => console.log(err))
 
 module.exports = Call;
