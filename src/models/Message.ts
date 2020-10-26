@@ -1,7 +1,7 @@
 import { Sequelize, Model, DataTypes } from "sequelize";
 const sequelize = new Sequelize('postgres://postgres:1234@localhost:5432/whatsapp');
 
-class Message extends Model {
+export default class Message extends Model {
     public id!: number
     public contactFrom!: number
     public date!: Date

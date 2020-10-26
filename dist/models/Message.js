@@ -4,6 +4,7 @@ const sequelize_1 = require("sequelize");
 const sequelize = new sequelize_1.Sequelize('postgres://postgres:1234@localhost:5432/whatsapp');
 class Message extends sequelize_1.Model {
 }
+exports.default = Message;
 Message.init({
     id: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -36,34 +37,3 @@ sequelize.sync().then(() => {
 })
     .catch((err) => console.log(err));
 module.exports = Message;
-// import { DataType } from 'sequelize-typescript';
-// import sequelize from 'sequelize';
-// const db = require('../../config/database');
-// export const Message: sequelize.Model = db.define("message", {
-//     contactFrom: {
-//         type: DataType.INTEGER,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-//     contact: {
-//         type: DataType.INTEGER,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-//     date: {
-//         type: DataType.DATE,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-//     text: {
-//         type: DataType.STRING,
-//     },
-// }, {
-//     paranoid: true
-// })
-// // Message.sync().then(() => {
-// //     console.log('table message created')
-// // })

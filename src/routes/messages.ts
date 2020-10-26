@@ -1,37 +1,9 @@
 import express, { Request, Response } from 'express';
+import Message from '../interfaces/message';
 const router = express.Router();
 const Message = require('../models/Message');
-
-interface Message {
-    id: number
-    contact: number
-    date: Date
-    createdAt: Date
-    updatedAt: Date
-    deletedAt: Date
-}
-
-interface ResponseMessage {
-    status: string
-    data: Message[] | {}[]
-}
-
-function setSuccessResponse(data: Message[]) {
-    let response: ResponseMessage = {
-        status: "success",
-        data
-    }
-    return response;
-}
-
-function setFailResponse(data: {}[]) {
-    let response: ResponseMessage = {
-        status: "error",
-        data
-    }
-    return response;
-}
-
+const setSuccessResponse = require('../helpers/success-response-setters');
+const setFailResponse = require('../helpers/fail-response-setter');
 
 router.get("/", (req: Request, res: Response) => {
     Message.findAll({

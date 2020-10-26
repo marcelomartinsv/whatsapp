@@ -4,6 +4,7 @@ const sequelize_1 = require("sequelize");
 const sequelize = new sequelize_1.Sequelize('postgres://postgres:1234@localhost:5432/whatsapp');
 class Call extends sequelize_1.Model {
 }
+exports.default = Call;
 Call.init({
     id: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -36,43 +37,3 @@ sequelize.sync().then(() => {
 })
     .catch((err) => console.log(err));
 module.exports = Call;
-// import { DataType } from 'sequelize-typescript';
-// import sequelize from 'sequelize';
-// const db = require('../../config/database');
-// export const Call: sequelize.Model = db.define("call", {
-//     contactFrom: {
-//         type: DataType.STRING,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-//     contact: {
-//         type: DataType.INTEGER,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-//     date: {
-//         type: DataType.DATE,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-//     durationInSeconds: {
-//         type: DataType.INTEGER,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-//     type: {
-//         type: DataType.STRING,
-//         validate: {
-//             notEmpty: true
-//         }
-//     },
-// }, {
-//     paranoid: true
-// })
-// // Call.sync().then(() => {
-// //     console.log('table call created')
-// // })

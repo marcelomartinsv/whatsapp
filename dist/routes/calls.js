@@ -6,20 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const Call = require('../models/Call');
-function setSuccessResponse(data) {
-    let response = {
-        status: "success",
-        data
-    };
-    return response;
-}
-function setFailResponse(data) {
-    let response = {
-        status: "error",
-        data
-    };
-    return response;
-}
+const setSuccessResponse = require('../helpers/success-response-setters');
+const setFailResponse = require('../helpers/fail-response-setter');
 router.get("/", (req, res) => {
     Call.findAll({
         orderBy: [['id', 'ASC']],

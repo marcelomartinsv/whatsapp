@@ -1,41 +1,10 @@
 
 import express, { Request, Response } from 'express';
+import Call from '../interfaces/call'
 const router = express.Router();
 const Call = require('../models/Call');
-
-interface Call {
-    id: number
-    contactFrom: number
-    contact: number
-    date: Date
-    durationInSeconds: number
-    type: string
-    createdAt: Date
-    updatedAt: Date
-    deletedAt: Date
-}
-
-interface ResponseMessage {
-    status: string
-    data: Call[] | {}[]
-}
-
-function setSuccessResponse(data: Call[]) {
-    let response: ResponseMessage = {
-        status: "success",
-        data
-    }
-    return response;
-}
-
-function setFailResponse(data: {}[]) {
-    let response: ResponseMessage = {
-        status: "error",
-        data
-    }
-    return response;
-}
-
+const setSuccessResponse = require('../helpers/success-response-setters');
+const setFailResponse = require('../helpers/fail-response-setter');
 
 router.get("/", (req: Request, res: Response) => {
     Call.findAll({
