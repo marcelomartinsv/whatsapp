@@ -7,7 +7,7 @@ interface ResponseMessage {
     data: Call[] | Contact[] | Message[]
 }
 
-export const setSuccessResponse = (data: Call[] | Contact[]) => {
+export const setSuccessResponse = (data: Call[] | Contact[] | Message[]) => {
     let response: ResponseMessage = {
         status: "success",
         data

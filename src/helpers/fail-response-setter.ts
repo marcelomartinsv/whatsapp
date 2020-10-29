@@ -1,7 +1,3 @@
-import Call from '../models/Call';
-import Contact from '../models/Contact';
-import Message from '../models/Message';
-
 interface ErrorMessage {
     message: string;
 }
