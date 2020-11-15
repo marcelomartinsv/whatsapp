@@ -1,68 +1,54 @@
 
 import express, { Request, Response } from 'express';
-import Call from '../interfaces/call'
+import CallsRepo from '../repository/CallsRepository';
 const router = express.Router();
-const Call = require('../models/Call');
 const setSuccessResponse = require('../helpers/success-response-setters');
-const setFailResponse = require('../helpers/fail-response-setter');
+const setFailResponse = require('../helpers/fail-response-setter')
 
-router.get("/", (req: Request, res: Response) => {
-    Call.findAll({
-        orderBy: [['id', 'ASC']],
-    })
-        .then((calls: Call[]) => res.send(setSuccessResponse(calls)))
-        .catch((err: any) => res.sendStatus(400).send(setFailResponse([{ message: err }])))
+router.get("/", async (req: Request, res: Response) => {
+    const calls = await CallsRepo.getCalls();
+    if (!calls.length) {
+        return res.send(setFailResponse({ message: 'request could not be completed' }));
+    } else {
+        res.send(setSuccessResponse(calls))
+    }
 })
 
-router.get("/:id", (req: Request, res: Response) => {
-    Call.findAll({
-        where: { id: req.params.id },
-    })
-        .then((call: Call[]) => {
-            if (call.length) {
-                res.send(setSuccessResponse(call))
-            } else {
-                res.send(setFailResponse([{ message: "Invalid Call Id" }]))
-            }
-        })
-        .catch((err: any) => res.sendStatus(400).send(setFailResponse([{ message: err }])))
+router.get("/:id", async (req: Request, res: Response) => {
+    const call = await CallsRepo.getCall(Number(req.params.id));
+    if (!call.length) {
+        return res.sendStatus(404).send(setFailResponse({ message: 'Invalid id' }));
+    } else {
+        res.send(call)
+    }
 })
 
-router.post("/add", (req: Request, res: Response) => {
-    Call.create(req.body)
-        .then((call: Call[]) => res.send(setSuccessResponse(call)))
-        .catch((err: any) => res.status(400).send(setFailResponse([{ message: err }])))
+router.post("/add", async (req: Request, res: Response) => {
+    const call = await CallsRepo.createCall(req.body);
+    if (!call) {
+        res.send(setFailResponse({ message: 'request could not be completed' }));
+    } else {
+        res.send(setSuccessResponse([call]))
+    }
 })
 
-router.delete("/delete/:id", (req: Request, res: Response) => {
-    Call.destroy({
-        where: { id: req.params.id }
-    })
-        .then(() => Call.findAll({ where: { id: req.params.id }, paranoid: false }))
-        .then((call: Call[]) => {
-            if (call.length) {
-                res.send(setSuccessResponse(call))
-            } else {
-                res.send(setFailResponse([{ message: "Invalid Call Id" }]))
-            }
-        })
-        .catch((err: any) => res.status(400).send(setFailResponse([{ message: err }])))
+router.delete("/delete/:id", async (req: Request, res: Response) => {
+    const call = await CallsRepo.deleteCall(Number(req.params.id));
+    if (!call) {
+        res.send(setFailResponse({ message: 'Invalid Id' }));
+    } else {
+        res.send(setSuccessResponse(call))
+    }
+
 })
 
-router.post("/restore/:id", (req: Request, res: Response) => {
-    Call.restore({
-        where: { id: req.params.id }
-    })
-        .then(() => Call.findAll({ where: { id: req.params.id } }))
-        .then((call: Call[]) => {
-            if (call.length) {
-                res.send(setSuccessResponse(call))
-            } else {
-                res.send(setFailResponse([{ message: "Invalid Call Id" }]))
-            }
-        })
-        .catch((err: any) => res.sendStatus(500).send(setFailResponse([{ message: err }])))
+router.post("/restore/:id", async (req: Request, res: Response) => {
+    const call = await CallsRepo.restoreCall(Number(req.params.id));
+    if (!call) {
+        res.send(setFailResponse({ message: 'Invalid Id' }));
+    } else {
+        res.send(setSuccessResponse(call))
+    }
 })
-
 
 module.exports = router;
