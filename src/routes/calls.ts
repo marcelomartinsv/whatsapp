@@ -1,6 +1,6 @@
 
 import express, { Request, Response } from 'express';
-import CallsRepo from '../repository/CallsRepository';
+import CallsRepo from '../repository/callsRepository';
 const router = express.Router();
 const setSuccessResponse = require('../helpers/success-response-setters');
 const setFailResponse = require('../helpers/fail-response-setter')
@@ -17,9 +17,9 @@ router.get("/", async (req: Request, res: Response) => {
 router.get("/:id", async (req: Request, res: Response) => {
     const call = await CallsRepo.getCall(Number(req.params.id));
     if (!call.length) {
-        return res.sendStatus(404).send(setFailResponse({ message: 'Invalid id' }));
+        return res.send(setFailResponse({ message: 'Invalid id' }));
     } else {
-        res.send(call)
+        res.send(call).sendStatus(200)
     }
 })
 
