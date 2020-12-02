@@ -6,8 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const index_1 = __importDefault(require("./routes/index"));
+const path_1 = __importDefault(require("path"));
+const http_1 = __importDefault(require("http"));
+const socketio = require('socket.io');
 const logger = require('./utils/logger');
 const app = express_1.default();
+const server = http_1.default.createServer(app);
+const io = socketio(server);
+app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+io.on('connection', (socket) => {
+    socket.emit('message', 'welcome!');
+    socket.broadcast.emit('message', 'a user has joined the room');
+    socket.on('disconnect', () => {
+        io.emit('message', 'a user has left the room');
+    });
+});
 const db = require('../config/database');
 db.authenticate()
     .then(() => console.log('db ok!'))
@@ -23,11 +36,11 @@ app.use((req, res, next) => {
     }
     next();
 });
-app.get("/", (req, res) => {
-    logger.info("usuario en root");
-    return res.send("ok");
-});
+// app.get("/", (req: Request, res: Response) => {
+//     logger.info("usuario en root");
+//     return res.send("ok")
+// });
 app.use("/", index_1.default);
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => logger.info("server ok!"));
+server.listen(PORT, () => logger.info("server ok!"));
 module.exports = app;
