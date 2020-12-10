@@ -44,6 +44,27 @@ a {
 
 /* Chat Page */
 
+.d-none {
+	display: none;
+}
+
+#user-list {
+	width: 419px;
+	background-color: white;
+	position: absolute;
+	z-index: 10;
+}
+
+#user-list li{
+	padding: 5px;
+	cursor: pointer;
+}
+
+#user-list li:hover {
+	background-color: var(--dark-color-a);
+	color: var(--dark-color-d);
+}
+
 .chat-container {
 	width: 100%;
 	height: 100vh;

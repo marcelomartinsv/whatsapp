@@ -7,6 +7,7 @@ const { username, room } = Qs.parse(location.search, {
 
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
+const userInput = document.getElementById('username');
 
 const socket = io();
 
